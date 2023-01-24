@@ -1,6 +1,6 @@
 var cityFormEl = document.getElementById("city-form");
 var cityInputEl = document.getElementById("cityInput");
-var forecastContainer = document.getElementById("forecast-card");
+var forecastCard = document.getElementById("forecast-card");
 var searchedCity = document.getElementById("searchedCity");
 var today = dayjs().format("MMMM D, YYYY");
 
@@ -14,11 +14,9 @@ var formSubmit = function(event){
         getForecast(cityInput)
         getWeatherToday(cityInput)
 
-        // forecastContainer.textContent = "";
-        // cityInputEl.value = "";
     }return
-
 }
+
 
 // Todays Weather API
 var getWeatherToday = function (city_name){
@@ -42,9 +40,17 @@ var getWeatherToday = function (city_name){
 
 
 searchedCity.textContent = city_name + " (" + today + ")";
+
+//Save searched city to Local Storage
+
+localStorage.setItem("city", city_name);
+
+
+
 };
 
 var displayWeatherToday = function (data){
+    
     var todayTemp = data.main.temp
     console.log(todayTemp)
     temp.textContent = "Temp: " + todayTemp + " °C";
@@ -62,7 +68,7 @@ var displayWeatherToday = function (data){
 
 // 5 Day Forecart API
 var getForecast = function(city_name){
-    var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city_name + "&cnt=5&units=metric&appid=c318abf921e0b2467383d5553bd29182";
+    var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city_name + "&cnt=40&units=metric&appid=c318abf921e0b2467383d5553bd29182";
     console.log(apiUrl);
 
     fetch(apiUrl, {
@@ -86,22 +92,32 @@ var getForecast = function(city_name){
 // Display 5 Next Forecast Function
 var displayForecast = function (list, city_name){
     if (list.length === 0){
-        forecastContainer.textContent = "No results found";
+        forecastCard.textContent = "No results found";
         return;
 }
-searchedCity.textContent = city_name + " (" + today + ")";
 
 for (var i = 0; i < list.length; i++){
+    
+     var dataTime = list[i].dt_txt;
+     console.log(dataTime) 
      var cityTemp = list[i].main.temp;
      console.log(cityTemp);
      var cityHumidity = list[i].main.humidity;
      console.log(cityHumidity);
      var cityWind = list[i].wind.speed;
      console.log(cityWind);
-     var timeForecast = list[i].dt_txt;
-     console.log(timeForecast)
+     var icon = list[i].weather[0].icon;
 
-    //var date = document.getElementById("date");
+    var container = document.getElementById("forecast-container");
+    
+    var listEl = document.createElement("div");
+    listEl.classList = "col card card-body bg-secondary m-1"
+    listEl.textContent = ""
+    container.appendChild(listEl)
+    
+    var date = document.createElement("h4");
+    date.classList = "card-text text-white text-center";
+    date.textContent = dataTime;
 
     var tempEl = document.createElement("p");
     tempEl.classList = "card-text text-white";
@@ -115,10 +131,18 @@ for (var i = 0; i < list.length; i++){
     humidityEl.classList = "card-text text-white";
     humidityEl.textContent = "Humidity: " + cityHumidity + "%";
 
+    var weatherIcon = document.createElement("img")
+    var iconWeather = "http://openweathermap.org/img/wn/" + icon + ".png"
+    weatherIcon.setAttribute("src", iconWeather)
+    weatherIcon.classList = "align-self-center"
+    weatherIcon.style.width = "3rem"
+    console.log(weatherIcon)
 
-    forecastContainer.appendChild(tempEl);
-    forecastContainer.appendChild(windEl);
-    forecastContainer.appendChild(humidityEl)
+    listEl.appendChild(date);
+    listEl.appendChild(weatherIcon);
+    listEl.appendChild(tempEl);
+    listEl.appendChild(windEl);
+    listEl.appendChild(humidityEl)
 }
 
 
