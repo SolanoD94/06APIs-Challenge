@@ -41,23 +41,19 @@ var addHistory = function(searchHistory){
     var searchHistory = JSON.parse(localStorage.getItem("city"))
 
     var sidebarEl = document.createElement("button");
-    sidebarEl.classList = "btn btn-secondary mt-2 col-12";
+    sidebarEl.classList = "btn btn-secondary my-3 col-12";
     sidebarEl.setAttribute("cityInput", searchHistory)
     sidebarEl.innerHTML = searchHistory
     console.log(sidebarEl)
 
     cityFormEl.addEventListener("submit", sidebarContainer.appendChild(sidebarEl));
-    
-    //sidebarEl.addEventListener("click", forSubmit());
-    //console.log(sidebarEl.addEventListener("submit", getWeatherToday(city_name)))
-    
 }
 
 
 
 // Todays Weather API
 var getWeatherToday = function (city_name){
-    var apiUrlNow = "http://api.openweathermap.org/data/2.5/weather?q=" + city_name + "&units=metric&appid=c318abf921e0b2467383d5553bd29182";
+    var apiUrlNow = "https://api.openweathermap.org/data/2.5/weather?q=" + city_name + "&units=metric&appid=c318abf921e0b2467383d5553bd29182";
     console.log(apiUrlNow);
 
     fetch(apiUrlNow, {
@@ -88,7 +84,7 @@ localStorage.setItem("city", JSON.stringify(city_name));
 var displayWeatherToday = function (data){
     var todayIcon = data.weather[0].icon
     var weatherIconToday = document.getElementById("weatherIconToday")
-    var iconUrlToday = "http://openweathermap.org/img/wn/" + todayIcon + ".png"
+    var iconUrlToday = "https://openweathermap.org/img/wn/" + todayIcon + ".png"
     weatherIconToday.setAttribute("src", iconUrlToday)
     weatherIconToday.style.width = "4rem"
 
@@ -175,7 +171,7 @@ for (var i = 0; i < list.length; i++){
     humidityEl.textContent = "Humidity: " + cityHumidity + "%";
 
     var weatherIcon = document.createElement("img")
-    var iconWeather = "http://openweathermap.org/img/wn/" + icon + ".png"
+    var iconWeather = "https://openweathermap.org/img/wn/" + icon + ".png"
     weatherIcon.setAttribute("src", iconWeather)
     weatherIcon.classList = "align-self-center"
     weatherIcon.style.width = "3rem"
