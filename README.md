@@ -23,6 +23,7 @@ THEN I am again presented with current and future conditions for that city
 ```
 
 ## Mock-Up
+![Captura de Pantalla 2023-01-28 a la(s) 15 00 25](https://user-images.githubusercontent.com/117420563/215290896-4e530ec7-3a0f-4689-aff8-556f05127524.png)
 
 ## Link Deployed
 
